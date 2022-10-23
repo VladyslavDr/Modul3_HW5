@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace HelloWorldAsync
 {
@@ -13,7 +14,13 @@ namespace HelloWorldAsync
             Console.WriteLine(GetConcatText().Result);
         }
 
-        public static async Task<string> GetConcatText() => await ReadHelloAsync() + await ReadWorldAsync();
+        public static async Task<string> GetConcatText()
+        {
+            var hello = Task.Run(ReadHelloAsync);
+            var world = Task.Run(ReadWorldAsync);
+
+            return await hello + await world;
+        }
 
         public static async Task<string> ReadHelloAsync()
         {
